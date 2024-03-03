@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://btvu56xur4k75"]
+
+[ext_resource type="PackedScene" uid="uid://cmd31gkmh8d6b" path="res://character/scene/player.tscn" id="1_2tp3q"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_2e63a"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_j4d2k"]
+sky_material = SubResource("ProceduralSkyMaterial_2e63a")
+
+[sub_resource type="Environment" id="Environment_l7i07"]
+background_mode = 2
+sky = SubResource("Sky_j4d2k")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_yl4wr"]
+flip_faces = true
+size = Vector3(100, 100, 100)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_bdy62"]
+data = PackedVector3Array(50, 50, 50, -50, 50, 50, -50, -50, 50, 50, -50, 50, 50, 50, 50, -50, -50, 50, -50, 50, -50, 50, 50, -50, 50, -50, -50, -50, -50, -50, -50, 50, -50, 50, -50, -50, 50, 50, -50, 50, 50, 50, 50, -50, 50, 50, -50, -50, 50, 50, -50, 50, -50, 50, -50, 50, 50, -50, 50, -50, -50, -50, -50, -50, -50, 50, -50, 50, 50, -50, -50, -50, -50, 50, 50, 50, 50, 50, 50, 50, -50, -50, 50, -50, -50, 50, 50, 50, 50, -50, 50, -50, 50, -50, -50, 50, -50, -50, -50, 50, -50, -50, 50, -50, 50, -50, -50, -50)
+
+[node name="sandbox" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_l7i07")
+
+[node name="player" parent="." instance=ExtResource("1_2tp3q")]
+
+[node name="level box" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="level box"]
+mesh = SubResource("BoxMesh_yl4wr")
+skeleton = NodePath("../..")
+
+[node name="convex" type="CollisionShape3D" parent="level box"]
+shape = SubResource("ConcavePolygonShape3D_bdy62")
