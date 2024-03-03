@@ -1,0 +1,177 @@
+[gd_scene load_steps=29 format=3 uid="uid://dsovco3lg8y32"]
+
+[ext_resource type="Script" path="res://Main.gd" id="1_ffpej"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/StateMachinePlayer.gd" id="1_ut2td"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/states/StateMachine.gd" id="2_iajvr"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/states/State.gd" id="3_8y01a"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/conditions/Condition.gd" id="4_hx6o5"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/transitions/Transition.gd" id="5_mp0p1"]
+
+[sub_resource type="Resource" id="Resource_enpyp"]
+script = ExtResource("3_8y01a")
+name = "Entry"
+metadata/graph_offset = Vector2(166, 382)
+
+[sub_resource type="Resource" id="Resource_gwq38"]
+script = ExtResource("3_8y01a")
+name = "Exit"
+metadata/graph_offset = Vector2(566, 382)
+
+[sub_resource type="Resource" id="Resource_c7hei"]
+script = ExtResource("3_8y01a")
+name = "Game"
+metadata/graph_offset = Vector2(766, 182)
+
+[sub_resource type="Resource" id="Resource_eiuqy"]
+script = ExtResource("3_8y01a")
+name = "LevelSelect"
+metadata/graph_offset = Vector2(652, 82)
+
+[sub_resource type="Resource" id="Resource_rsp55"]
+script = ExtResource("3_8y01a")
+name = "MainMenu"
+metadata/graph_offset = Vector2(566, 182)
+
+[sub_resource type="Resource" id="Resource_iq63v"]
+script = ExtResource("3_8y01a")
+name = "SplashScreen"
+metadata/graph_offset = Vector2(144.5, 182)
+
+[sub_resource type="Resource" id="Resource_mw0md"]
+script = ExtResource("3_8y01a")
+name = "StartScreen"
+metadata/graph_offset = Vector2(366, 182)
+
+[sub_resource type="Resource" id="Resource_g8ot1"]
+script = ExtResource("5_mp0p1")
+from = "Entry"
+to = "SplashScreen"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_61scd"]
+script = ExtResource("5_mp0p1")
+from = "Game"
+to = "MainMenu"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_3fb2g"]
+script = ExtResource("4_hx6o5")
+name = "level_selected"
+
+[sub_resource type="Resource" id="Resource_cdowe"]
+script = ExtResource("5_mp0p1")
+from = "LevelSelect"
+to = "Game"
+conditions = {
+"level_selected": SubResource("Resource_3fb2g")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_x87k1"]
+script = ExtResource("4_hx6o5")
+name = "back"
+
+[sub_resource type="Resource" id="Resource_3tnp3"]
+script = ExtResource("5_mp0p1")
+from = "LevelSelect"
+to = "MainMenu"
+conditions = {
+"back": SubResource("Resource_x87k1")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_2yore"]
+script = ExtResource("4_hx6o5")
+name = "quit"
+
+[sub_resource type="Resource" id="Resource_0q0h3"]
+script = ExtResource("5_mp0p1")
+from = "MainMenu"
+to = "Exit"
+conditions = {
+"quit": SubResource("Resource_2yore")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_y0vcm"]
+script = ExtResource("4_hx6o5")
+name = "start_game"
+
+[sub_resource type="Resource" id="Resource_nyin1"]
+script = ExtResource("5_mp0p1")
+from = "MainMenu"
+to = "LevelSelect"
+conditions = {
+"start_game": SubResource("Resource_y0vcm")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_64hsg"]
+script = ExtResource("4_hx6o5")
+name = "splash_anim_finished"
+
+[sub_resource type="Resource" id="Resource_0suw3"]
+script = ExtResource("5_mp0p1")
+from = "SplashScreen"
+to = "StartScreen"
+conditions = {
+"splash_anim_finished": SubResource("Resource_64hsg")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_jfh8p"]
+script = ExtResource("4_hx6o5")
+name = "enter"
+
+[sub_resource type="Resource" id="Resource_2j2fl"]
+script = ExtResource("5_mp0p1")
+from = "StartScreen"
+to = "MainMenu"
+conditions = {
+"enter": SubResource("Resource_jfh8p")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_tqw35"]
+script = ExtResource("2_iajvr")
+states = {
+"Entry": SubResource("Resource_enpyp"),
+"Exit": SubResource("Resource_gwq38"),
+"Game": SubResource("Resource_c7hei"),
+"LevelSelect": SubResource("Resource_eiuqy"),
+"MainMenu": SubResource("Resource_rsp55"),
+"SplashScreen": SubResource("Resource_iq63v"),
+"StartScreen": SubResource("Resource_mw0md")
+}
+transitions = {
+"Entry": {
+"SplashScreen": SubResource("Resource_g8ot1")
+},
+"Game": {
+"MainMenu": SubResource("Resource_61scd")
+},
+"LevelSelect": {
+"Game": SubResource("Resource_cdowe"),
+"MainMenu": SubResource("Resource_3tnp3")
+},
+"MainMenu": {
+"Exit": SubResource("Resource_0q0h3"),
+"LevelSelect": SubResource("Resource_nyin1")
+},
+"SplashScreen": {
+"StartScreen": SubResource("Resource_0suw3")
+},
+"StartScreen": {
+"MainMenu": SubResource("Resource_2j2fl")
+}
+}
+name = ""
+
+[node name="Main" type="Node"]
+script = ExtResource("1_ffpej")
+
+[node name="AppState" type="Node" parent="."]
+script = ExtResource("1_ut2td")
+state_machine = SubResource("Resource_tqw35")
