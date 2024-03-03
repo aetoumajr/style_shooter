@@ -12,6 +12,7 @@ var slide_state: State
 func enter() -> void:
 	super()
 	parent.velocity.x = 0
+	parent.velocity.y = 0
 	
 func process_input(event: InputEvent) -> State:
 	if Input.is_action_just_pressed("jump") and parent.is_on_floor():

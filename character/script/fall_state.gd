@@ -9,12 +9,22 @@ var move_state: State
 @export
 var slide_state: State
 
+func enter() -> void:
+	super()
+	#parent.velocity.z = jump_force
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
 
+func process_input(event: InputEvent) -> State:
+	if Input.is_action_just_pressed("jump") and parent.is_on_floor():
+		return jump_state
+	if Input.is_action_just_pressed("move_left") or Input.is_action_just_pressed("move_right") or Input.is_action_just_pressed("move_forward") or Input.is_action_just_pressed("move_back"):
+		return move_state
+	return null
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func process_physics(delta: float) -> State:
+	parent.velocity.z += gravity * delta
+	parent.move_and_slide()
+	
+	if parent.is_on_floor():
+		return move_state
+	return null

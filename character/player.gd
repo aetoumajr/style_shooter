@@ -19,7 +19,8 @@ func _physics_process(delta: float) -> void:
 	state_machine.process_physics(delta)
 	
 func _process(delta: float) -> void:
-	state_machine.process_fram(delta)
+	state_machine.process_frame(delta)
+	
 #
 #var mouse_sensitivity := 0.001
 #var twist_input := 0.0
