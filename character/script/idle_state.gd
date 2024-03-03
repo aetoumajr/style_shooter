@@ -6,6 +6,8 @@ var fall_state: State
 var jump_state: State
 @export
 var move_state: State
+@export
+var slide_state: State
 
 func enter() -> void:
 	super()

@@ -1,11 +1,13 @@
 extends State
 
 @export
-var fall_state: State
+var idle_state: State
 @export
 var jump_state: State
 @export
 var move_state: State
+@export
+var slide_state: State
 
 
 # Called when the node enters the scene tree for the first time.
