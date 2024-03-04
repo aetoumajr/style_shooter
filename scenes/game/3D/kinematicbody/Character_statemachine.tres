@@ -1,0 +1,215 @@
+[gd_resource type="Resource" script_class="StateMachine" load_steps=34 format=3 uid="uid://cfjorjpa6t1b8"]
+
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/states/StateMachine.gd" id="1_mpl35"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/states/State.gd" id="2_7anqq"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/transitions/Transition.gd" id="3_gulqh"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/conditions/BooleanCondition.gd" id="4_llwpf"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/conditions/IntegerCondition.gd" id="5_b4lw7"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/conditions/Condition.gd" id="6_gq8p5"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/conditions/FloatCondition.gd" id="7_x3kss"]
+
+[sub_resource type="Resource" id="Resource_mn0fh"]
+script = ExtResource("2_7anqq")
+name = "Entry"
+metadata/graph_offset = Vector2(2100.12, 3979.87)
+
+[sub_resource type="Resource" id="Resource_ji6eb"]
+script = ExtResource("2_7anqq")
+name = "Exit"
+metadata/graph_offset = Vector2(2670, 4324)
+
+[sub_resource type="Resource" id="Resource_djh3n"]
+script = ExtResource("2_7anqq")
+name = "Fall"
+metadata/graph_offset = Vector2(2332, 4194)
+
+[sub_resource type="Resource" id="Resource_yfvig"]
+script = ExtResource("2_7anqq")
+name = "Idle"
+metadata/graph_offset = Vector2(2228, 3986)
+
+[sub_resource type="Resource" id="Resource_7k0df"]
+script = ExtResource("2_7anqq")
+name = "Jump"
+metadata/graph_offset = Vector2(2472.3, 4003.83)
+
+[sub_resource type="Resource" id="Resource_701fk"]
+script = ExtResource("2_7anqq")
+name = "Jump(n)"
+metadata/graph_offset = Vector2(2566, 4116)
+
+[sub_resource type="Resource" id="Resource_egfrx"]
+script = ExtResource("2_7anqq")
+name = "Walk"
+metadata/graph_offset = Vector2(2332, 3908)
+
+[sub_resource type="Resource" id="Resource_jftgq"]
+script = ExtResource("3_gulqh")
+from = "Entry"
+to = "Idle"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_gdfrf"]
+script = ExtResource("4_llwpf")
+value = true
+comparation = 0
+name = "on_floor"
+
+[sub_resource type="Resource" id="Resource_dhcgs"]
+script = ExtResource("3_gulqh")
+from = "Fall"
+to = "Idle"
+conditions = {
+"on_floor": SubResource("Resource_gdfrf")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_2vy38"]
+script = ExtResource("5_b4lw7")
+value = 2
+comparation = 3
+name = "jump_count"
+
+[sub_resource type="Resource" id="Resource_76jgk"]
+script = ExtResource("5_b4lw7")
+value = 1500
+comparation = 5
+name = "jump_elapsed"
+
+[sub_resource type="Resource" id="Resource_8txmq"]
+script = ExtResource("6_gq8p5")
+name = "space"
+
+[sub_resource type="Resource" id="Resource_mowi8"]
+script = ExtResource("3_gulqh")
+from = "Fall"
+to = "Jump(n)"
+conditions = {
+"jump_count": SubResource("Resource_2vy38"),
+"jump_elapsed": SubResource("Resource_76jgk"),
+"space": SubResource("Resource_8txmq")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_peyef"]
+script = ExtResource("4_llwpf")
+value = false
+comparation = 0
+name = "on_floor"
+
+[sub_resource type="Resource" id="Resource_4csos"]
+script = ExtResource("3_gulqh")
+from = "Idle"
+to = "Fall"
+conditions = {
+"on_floor": SubResource("Resource_peyef")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_gdqd5"]
+script = ExtResource("6_gq8p5")
+name = "space"
+
+[sub_resource type="Resource" id="Resource_mnnqt"]
+script = ExtResource("3_gulqh")
+from = "Idle"
+to = "Jump"
+conditions = {
+"space": SubResource("Resource_gdqd5")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_fyu6p"]
+script = ExtResource("7_x3kss")
+value = 0.0
+comparation = 2
+name = "walk"
+
+[sub_resource type="Resource" id="Resource_um4i1"]
+script = ExtResource("3_gulqh")
+from = "Idle"
+to = "Walk"
+conditions = {
+"walk": SubResource("Resource_fyu6p")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_1eri0"]
+script = ExtResource("3_gulqh")
+from = "Jump"
+to = "Fall"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_a5g5q"]
+script = ExtResource("3_gulqh")
+from = "Jump(n)"
+to = "Fall"
+conditions = {}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_mtdas"]
+script = ExtResource("7_x3kss")
+value = 0.0
+comparation = 5
+name = "walk"
+
+[sub_resource type="Resource" id="Resource_p63ht"]
+script = ExtResource("3_gulqh")
+from = "Walk"
+to = "Idle"
+conditions = {
+"walk": SubResource("Resource_mtdas")
+}
+priority = 0
+
+[sub_resource type="Resource" id="Resource_3rlcs"]
+script = ExtResource("6_gq8p5")
+name = "space"
+
+[sub_resource type="Resource" id="Resource_m6ite"]
+script = ExtResource("3_gulqh")
+from = "Walk"
+to = "Jump"
+conditions = {
+"space": SubResource("Resource_3rlcs")
+}
+priority = 0
+
+[resource]
+script = ExtResource("1_mpl35")
+states = {
+"Entry": SubResource("Resource_mn0fh"),
+"Exit": SubResource("Resource_ji6eb"),
+"Fall": SubResource("Resource_djh3n"),
+"Idle": SubResource("Resource_yfvig"),
+"Jump": SubResource("Resource_7k0df"),
+"Jump(n)": SubResource("Resource_701fk"),
+"Walk": SubResource("Resource_egfrx")
+}
+transitions = {
+"Entry": {
+"Idle": SubResource("Resource_jftgq")
+},
+"Fall": {
+"Idle": SubResource("Resource_dhcgs"),
+"Jump(n)": SubResource("Resource_mowi8")
+},
+"Idle": {
+"Fall": SubResource("Resource_4csos"),
+"Jump": SubResource("Resource_mnnqt"),
+"Walk": SubResource("Resource_um4i1")
+},
+"Jump": {
+"Fall": SubResource("Resource_1eri0")
+},
+"Jump(n)": {
+"Fall": SubResource("Resource_a5g5q")
+},
+"Walk": {
+"Idle": SubResource("Resource_p63ht"),
+"Jump": SubResource("Resource_m6ite")
+}
+}
+name = ""

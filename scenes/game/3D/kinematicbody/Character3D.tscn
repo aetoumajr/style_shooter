@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://bdndipq2mys3d"]
+
+[ext_resource type="Resource" uid="uid://cfjorjpa6t1b8" path="res://scenes/game/3D/kinematicbody/Character_statemachine.tres" id="2_qlbgf"]
+[ext_resource type="Script" path="res://addons/imjp94.yafsm/src/StateMachinePlayer.gd" id="2_yhfdn"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ubh1w"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1t4px"]
+
+[node name="Character3D" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_ubh1w")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_1t4px")
+
+[node name="StateMachinePlayer" type="Node" parent="."]
+script = ExtResource("2_yhfdn")
+state_machine = ExtResource("2_qlbgf")

@@ -30,40 +30,8 @@ func _physics_process(delta):
 	smp.set_param("walk", walk.abs().length())
 
 	# NOTE: It is more efficient to run directly in _physics_process, this demo is to showcase how to handle logic in updated signal
-	velocity += Vector3.DOWN * 9.8 * delta
-	match smp.get_current():
-		"Idle":
-			pass
-		"Walk":
-			velocity += walk * speed * delta
-			walk = Vector3.ZERO
-		"Jump":
-			_jump_count = 0
-			jump()
-			smp.set_param("jump_count", _jump_count)
-		"Jump(n)":
-			jump()
-			smp.set_param("jump_count", _jump_count)
-		"Fall":
-			smp.set_param("jump_elapsed", Time.get_ticks_msec() - _last_jump)
-	velocity = move_and_slide(velocity, Vector3.UP)
-	velocity.x *= pow(1.0 - damping, delta)
-	velocity.z *= pow(1.0 - damping, delta)
-
-func _unhandled_key_input(event):
-	if Input.is_action_just_pressed("ui_accept"):
-		smp.set_trigger("space")
-
-func jump():
-	velocity += Vector3.UP * 10
-	_last_jump = Time.get_ticks_msec()
-	_jump_count += 1
-
-func _on_StateMachinePlayer_updated(state, delta):
-	pass
-	# NOTE: It is more efficient to run directly in _physics_process, this demo is to showcase how to handle logic in updated signal
 	#velocity += Vector3.DOWN * 9.8 * delta
-	#match state:
+	#match smp.get_current():
 		#"Idle":
 			#pass
 		#"Walk":
@@ -78,6 +46,38 @@ func _on_StateMachinePlayer_updated(state, delta):
 			#smp.set_param("jump_count", _jump_count)
 		#"Fall":
 			#smp.set_param("jump_elapsed", Time.get_ticks_msec() - _last_jump)
-	#move_and_slide()
+	#velocity = move_and_slide(velocity, Vector3.UP)
 	#velocity.x *= pow(1.0 - damping, delta)
 	#velocity.z *= pow(1.0 - damping, delta)
+
+func _unhandled_key_input(event):
+	if Input.is_action_just_pressed("ui_accept"):
+		smp.set_trigger("space")
+
+func jump():
+	velocity += Vector3.UP * 10
+	_last_jump = Time.get_ticks_msec()
+	_jump_count += 1
+
+func _on_StateMachinePlayer_updated(state, delta):
+	pass
+	 #NOTE: It is more efficient to run directly in _physics_process, this demo is to showcase how to handle logic in updated signal
+	velocity += Vector3.DOWN * 9.8 * delta
+	match state:
+		"Idle":
+			pass
+		"Walk":
+			velocity += walk * speed * delta
+			walk = Vector3.ZERO
+		"Jump":
+			_jump_count = 0
+			jump()
+			smp.set_param("jump_count", _jump_count)
+		"Jump(n)":
+			jump()
+			smp.set_param("jump_count", _jump_count)
+		"Fall":
+			smp.set_param("jump_elapsed", Time.get_ticks_msec() - _last_jump)
+	move_and_slide()
+	velocity.x *= pow(1.0 - damping, delta)
+	velocity.z *= pow(1.0 - damping, delta)
